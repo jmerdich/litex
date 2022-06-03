@@ -115,7 +115,11 @@ class MrCpu(CPU):
 
     @staticmethod
     def add_sources(platform):
-        vdir = get_data_mod("cpu", "mrcpu").data_location
+        if "MRCPU_SOURCE_OVERLAY" in os.environ:
+            # Special path to use sources directly instead of through package
+            vdir = os.environ["MRCPU_SOURCE_OVERLAY"]
+        else:
+            vdir = get_data_mod("cpu", "mrcpu").data_location
         platform.add_verilog_include_path(os.path.join(vdir, "rtl"))
         platform.add_verilog_include_path(vdir)
         platform.add_source_dir(os.path.join(vdir, "rtl"))
